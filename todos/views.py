@@ -9,7 +9,8 @@ from .serializers import (
     TodoSerializer,
     UserProfileSerializer,
     UserItemSerializer,
-    UserRegistrationSerializer
+    UserRegistrationSerializer,
+    UserSerializer,
 )
 from .models import Todo, User
 
@@ -71,10 +72,27 @@ class UserDetail(APIView):
     """
     User profile details
     """
+    permission_classes = (IsAuthenticated, )
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except Todo.DoesNotExist:
+            raise Http404
     def get(self, request, pk, format=None):
-        pass
+        user = self.get_object(pk)
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data)
     def put(self, request, pk, format=None):
-        pass
+        user = self.get_object(pk)
+        if request.user != user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        serializer = UserSerializer(user, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': True})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class Registration(CreateAPIView):
     serializer_class = UserRegistrationSerializer

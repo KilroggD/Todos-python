@@ -26,7 +26,7 @@ class ViewTestCase(TestCase):
         self.client = APIClient()
         self.todo_data = {'name': 'todo1'}
         self.response = self.client.post(
-            reverse('create'),
+            reverse('createTodo'),
             self.todo_data,
             format='json'
         )
