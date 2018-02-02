@@ -3,6 +3,12 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import Todo, User
 
+
+class TodoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todo
+        fields = ('name', 'descr', 'completed', 'user')
+
 class UserItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -14,12 +20,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
     Class to serialize data for user profile details
     """
     email_hash = serializers.SerializerMethodField()
-    topics = TopicSerializer(many=True)
+    todos = TodoSerializer(many=True)
 
     class Meta:
         model = User
         fields = ('id', 'email_hash', 'first_name', 'last_name',
-                  'current_position', 'bio', 'topics')
+                  'current_position', 'bio', 'todos')
 
     def get_email_hash(self, obj):
         return hashlib.md5(obj.email.encode("UTF-8")).hexdigest()
@@ -29,8 +35,8 @@ class UserSerializer(serializers.ModelSerializer):
     """
     Class to serialize data for user validation
     """
-    topics = serializers.PrimaryKeyRelatedField(
-        required=False, many=True, queryset=Topic.objects.all())
+    todos = serializers.PrimaryKeyRelatedField(
+        required=False, many=True, queryset=Todo.objects.all())
     first_name = serializers.CharField(max_length=60)
     last_name = serializers.CharField(max_length=60)
     current_position = serializers.CharField(max_length=64)
@@ -39,7 +45,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name',
-                  'current_position', 'bio', 'topics')
+                  'current_position', 'bio', 'todos')
 
     def validate(self, data):
         if len(data['first_name']) + len(data['last_name']) > 60:
@@ -68,8 +74,3 @@ class UserRegistrationSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 {'password': 'Passwords don\'t match'})
         return data
-
-class TodoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Todo
-        fields = ('name', 'descr', 'completed', 'user')

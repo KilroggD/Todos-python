@@ -2,9 +2,8 @@ from django.http import Http404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
-from rest_framework.views import APIView, CreateAPIView
+from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework_jwt.settings import api_settings
 from .serializers import (
     TodoSerializer,
     UserProfileSerializer,
@@ -13,6 +12,9 @@ from .serializers import (
     UserSerializer,
 )
 from .models import Todo, User
+
+def index(request):
+    return render(request, 'index.html')
 
 class TododList(APIView):
     """
@@ -64,6 +66,7 @@ class UserList(APIView):
     List all users
     """
     def get(self, request, format=None):
+        #TODO - add search parameters
         users = User.objects.all()
         serializer = UserItemSerializer(users, many=True)
         return Response({'users': serializer.data})
@@ -94,12 +97,11 @@ class UserDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class Registration(CreateAPIView):
+class Registration(APIView):
     serializer_class = UserRegistrationSerializer
     permission_classes = (AllowAny,)
-    queryset = User.objects.get_with_topics()
 
-    def create(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = self.perform_create(serializer)
@@ -111,5 +113,4 @@ class Registration(CreateAPIView):
 
     def perform_create(self, serializer):
         user = serializer.save(self.request)
-        jwt_payload
         return user
