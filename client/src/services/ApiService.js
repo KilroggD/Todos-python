@@ -1,4 +1,5 @@
 import api from '../api';
+import StorageService from './StorageService'
 
 /**
  * Service to abstract api calls to one file - to be used in middleware
@@ -49,13 +50,18 @@ class ApiSerice {
     /**
      * Throw common error on not successful status
      * @param {object} response 
+     * @param {bool} auth - check for unauth error or not
      */
-    handleCommonError(response) {
+    handleCommonError(response, auth = false) {
+        if(response.status === 401 && auth) {
+            StorageService.removeToken()
+            window.location(api.login)
+        }
         if (response.status !== 200 && response.status !== 201) {
-            throw new Error(response.status);
+            throw new Error(response.status)
         }
         return;
-    }
+    }   
 
     async register(params) { //registration
         const reg = await this.apiCall(api.sign_up, 'POST', false, params);
@@ -66,6 +72,11 @@ class ApiSerice {
         const res = await this.apiCall(api.login, 'POST', false, params);
         this.handleCommonError(res);
         return res.body;
+    }
+
+    async logout(token) { //login
+        const res = await this.apiCall(api.logout, 'POST', false, null, token);
+        return res.status;
     }
 
     async verify_token(token = false) { //verify token on load
@@ -108,21 +119,21 @@ class ApiSerice {
         return res.body;
     }
 
-    async topics(token) { //get topics list
-        const res = await this.apiCall(api.topics, 'GET', token);
+    async get_todos(token) { //get topics list
+        const res = await this.apiCall(api.todos, 'GET', token);
+        this.handleCommonError(res, true);
+        return res.body;
+    }
+
+    async add_todo(token, params) {
+        const res = await this.apiCall(`${api.todos}`, 'POST', token, params);
         this.handleCommonError(res);
         return res.body;
     }
 
-    async add_topic(token, params) {
-        const res = await this.apiCall(`${api.topics}`, 'POST', token, params);
-        this.handleCommonError(res);
-        return res.body;
-    }
-
-    async get_topic(id, token) { //edit topic
+    async get_todo(id, token) { //edit topic
         const res = await this.apiCall(
-            `${api.topic}/${id}/`,
+            `${api.todo}/${id}/`,
             'GET',
             token,
         );
@@ -130,9 +141,9 @@ class ApiSerice {
         return res.body;
     }
 
-    async edit_topic(id, token, params) { //edit topic
+    async edit_todo(id, token, params) { //edit topic
         const res = await this.apiCall(
-            `${api.topic}/${id}/`,
+            `${api.todo}/${id}/`,
             'PUT',
             token,
             params

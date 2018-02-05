@@ -1,8 +1,10 @@
-import {observable, computed, reaction} from 'mobx'
+import { observable, computed, reaction } from 'mobx'
+import ApiService from '../services/ApiService'
 
 class TodoStore {
 
     @observable todos = []
+    @observable loading = true
 
     @computed getActiveTodoCount() {
         return this.todos.reduce(
@@ -15,8 +17,14 @@ class TodoStore {
         return this.todos.length - this.getActiveTodoCount;
     }
 
-    @action async fetchTodos() {
-        
+    @action async fetchTodos(userId) {
+        this.todos = []
+        this.loading = true
+        const res = await ApiService.get_todos(userId)      
+        runInAction(() => {
+            this.todos = res.todos;
+            this.loading = false;
+        }
     }
 
 }
