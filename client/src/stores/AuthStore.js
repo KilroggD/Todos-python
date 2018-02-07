@@ -16,11 +16,13 @@ class AuthStore {
             runInAction(() => {
                 this.isAuthenticated = true
                 this.isFailure = false
+                this.isLoading = false
             })
         } catch (e) {
             runInAction(() => {
                 this.isAuthenticated = false
                 this.isFailure = true
+                this.isLoading = false
             })
         }
     }
@@ -36,14 +38,32 @@ class AuthStore {
         })
     }
 
-
     @action async fetchProfile() {
-        const res = await ApiService.current_user(StorageService.getToken())
-        this.isLoading = true
-        runInAction(() => {
-            this.isLoading = false
-            this.currentUser = res
-        })
+        try {
+            if (!StorageService.getToken()) {
+                throw 'No token provided!'
+            }
+            this.isLoading = true
+            const res = await ApiService.current_user(StorageService.getToken())
+            runInAction(() => {
+                this.isAuthenticated = true
+                this.currentUser = res
+                this.isLoading = false
+                this.isFailure = false
+            })
+        } catch (e) {
+            runInAction(() => {
+                // auto log out if we can't get profile
+                StorageService.removeToken()
+                this.isAuthenticated = false
+                this.isFailure = false
+                this.currentUser = null
+                this.isLoading = false
+            })
+        }
     }
 
 }
+
+export default new AuthStore()
+export { AuthStore }

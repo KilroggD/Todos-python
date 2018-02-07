@@ -121,7 +121,7 @@ class ApiSerice {
 
     async get_todos(token) { //get topics list
         const res = await this.apiCall(api.todos, 'GET', token);
-        this.handleCommonError(res, true);
+        this.handleCommonError(res);
         return res.body;
     }
 
