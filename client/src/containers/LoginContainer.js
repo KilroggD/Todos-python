@@ -19,7 +19,7 @@ class LoginContainer extends React.Component {
         }
         return (
             <div className='login'>
-                <LoginForm handler={this.handleLogin}>
+                <LoginForm handler={this.handleLogin} />
                 {
                     authStore.isFailure &&
                     <p className="ut__badge ut__badge--error">Login failed</p>
