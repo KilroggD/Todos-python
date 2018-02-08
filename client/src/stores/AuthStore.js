@@ -1,6 +1,8 @@
 import { observable, computed, reaction } from 'mobx'
 import ApiService from '../services/ApiService'
 import StorageService from '../services/StorageService'
+import history from '../services/history'
+import routes from '../routes'
 
 class AuthStore {
     @observable isAuthenticated = false
@@ -59,6 +61,7 @@ class AuthStore {
                 this.isFailure = false
                 this.currentUser = null
                 this.isLoading = false
+                history.push(routes.login)
             })
         }
     }
