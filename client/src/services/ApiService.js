@@ -41,7 +41,7 @@ class ApiSerice {
         let headers = new Headers();
         headers.append('Content-type', 'application/json');
         if (token) {
-            headers.append('Authorization', `JWT ${token}`);
+            headers.append('Authorization', `Token ${token}`);
         }
 
         return headers;

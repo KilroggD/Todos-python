@@ -9,7 +9,7 @@ class LoginContainer extends React.Component {
 
 
     handleLogin = async (params) => {
-        await this.props.authStore.login()
+        await this.props.authStore.login(params)
     }
 
     render() {

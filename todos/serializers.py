@@ -20,12 +20,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
     Class to serialize data for user profile details
     """
     email_hash = serializers.SerializerMethodField()
-    todos = TodoSerializer(many=True)
 
     class Meta:
         model = User
         fields = ('id', 'email_hash', 'first_name', 'last_name',
-                  'current_position', 'bio', 'todos')
+                  'current_position', 'bio')
 
     def get_email_hash(self, obj):
         return hashlib.md5(obj.email.encode("UTF-8")).hexdigest()

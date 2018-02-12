@@ -20,7 +20,6 @@ from django.views.decorators.cache import cache_control
 
 urlpatterns = [
     url(r'^$', csrf_exempt(TemplateView.as_view(template_name='index.html'))),
-    url(r'^index.html', csrf_exempt(TemplateView.as_view(template_name='index.html'))),
     url(
         r'^service-worker.js', cache_control(max_age=2592000)(
             TemplateView.as_view(
@@ -32,4 +31,5 @@ urlpatterns = [
     ),
     url(r'^api/', include('todos.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^(?P<path>.*)/$', csrf_exempt(TemplateView.as_view(template_name='index.html'))),
 ]

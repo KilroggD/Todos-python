@@ -1,4 +1,5 @@
 import React from 'react'
+import { observer, inject } from 'mobx-react'
 
 class UserListContainer extends React.Component {
     render () {
@@ -6,3 +7,4 @@ class UserListContainer extends React.Component {
     }
 }
 
+export default UserListContainer

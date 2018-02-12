@@ -19,6 +19,7 @@ class AuthStore {
                 this.isAuthenticated = true
                 this.isFailure = false
                 this.isLoading = false
+                history.push('/users')
             })
         } catch (e) {
             runInAction(() => {
@@ -37,13 +38,14 @@ class AuthStore {
             this.isFailure = false
             this.currentUser = null
             this.isLoading = false
+            history.push('/')
         })
     }
 
     @action async fetchProfile() {
         try {
             if (!StorageService.getToken()) {
-                throw 'No token provided!'
+                throw new Error('No token provided!')
             }
             this.isLoading = true
             const res = await ApiService.current_user(StorageService.getToken())
@@ -55,6 +57,7 @@ class AuthStore {
             })
         } catch (e) {
             runInAction(() => {
+                console.error(e.message)
                 // auto log out if we can't get profile
                 StorageService.removeToken()
                 this.isAuthenticated = false

@@ -13,25 +13,30 @@ class App extends Component {
         await this.props.authStore.fetchProfile()
     }
 
+    async componentDidUpdate(prevProps) {
+        console.log('did update')
+        console.log(prevProps)
+        if (this.props.authStore.isAuthenticated && !prevProps.authStore.isAuthenticated) {
+            await this.props.authStore.fetchProfile()
+        }
+    }
+
     logoutHandler = async () => {
         await this.props.authStore.logout()
     }
 
     render() {
+        console.log('render app')
         const authStore = this.props.authStore
         if (authStore.isLoading) {
             // loading state
             return <p>Loading...</p>
         }
-        if (!authStore.isAuthenticated || !authStore.currentUser) {
-            // go to login if not auth
-            return null
-        }
         return (
-            <div className="App">
+            <main>
                 {authStore.currentUser && <Header current_user={authStore.currentUser} logout={this.logoutHandler} />}
                 {this.props.children}
-            </div>
+            </main>
         );
     }
 }

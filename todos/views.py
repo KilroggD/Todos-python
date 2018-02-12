@@ -96,6 +96,14 @@ class UserDetail(APIView):
             return Response({'success': True})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class CurrentUser(APIView):
+    def get(self, request, *args, **kwargs):
+        if request.user.id == None:
+            raise Http404
+        serializer = UserProfileSerializer(request.user)
+        data = serializer.data
+        data['is_admin'] = request.user.is_superuser
+        return Response(data)
 
 class Registration(APIView):
     serializer_class = UserRegistrationSerializer

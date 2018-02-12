@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import routes from '../routes'
+import { Redirect } from 'react-router'
 import { Link } from 'react-router-dom'
 import history from '../services/history'
 
@@ -11,15 +12,14 @@ import history from '../services/history'
 @inject('authStore') @observer
 class Home extends Component {
 
-    componentWillMount() {
+    render() {
+
         const authStore = this.props.authStore
         if (authStore.currentUser) {
             // redirect to users list
-            history.push(routes.users)
+            return <Redirect to={routes.users} />
         }
-    }
 
-    render() {
         return <div className="ut__home">
             <h2>Welcome to Test app</h2>
             <section className="ut__btn-group">
