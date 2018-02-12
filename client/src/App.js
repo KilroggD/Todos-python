@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { observer, inject } from 'mobx-react'
 import { Redirect } from 'react-router'
 import routes from './routes'
 import Header from './components/Header'

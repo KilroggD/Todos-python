@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Redirect } from 'react-router'
-import { StorageService } from '../services/StorageService'
+import StorageService from '../services/StorageService'
 import LoginForm from '../forms/LoginForm'
 
 @inject('authStore') @observer
@@ -29,3 +29,5 @@ class LoginContainer extends React.Component {
     }
 
 }
+
+export default LoginContainer
