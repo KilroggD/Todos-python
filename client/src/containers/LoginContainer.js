@@ -1,6 +1,7 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Redirect } from 'react-router'
+import history from '../services/history'
 import StorageService from '../services/StorageService'
 import LoginForm from '../forms/LoginForm'
 
@@ -10,6 +11,13 @@ class LoginContainer extends React.Component {
 
     handleLogin = async (params) => {
         await this.props.authStore.login(params)
+    }
+
+    async componentWillReact() {
+        if(this.props.authStore.isAuthenticated) {
+            await this.props.authStore.fetchProfile()
+            history.push('/')
+        }
     }
 
     render() {

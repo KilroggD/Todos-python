@@ -19,7 +19,6 @@ class AuthStore {
                 this.isAuthenticated = true
                 this.isFailure = false
                 this.isLoading = false
-                history.push('/users')
             })
         } catch (e) {
             runInAction(() => {

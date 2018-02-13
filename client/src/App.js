@@ -13,14 +13,6 @@ class App extends Component {
         await this.props.authStore.fetchProfile()
     }
 
-    async componentDidUpdate(prevProps) {
-        console.log('did update')
-        console.log(prevProps)
-        if (this.props.authStore.isAuthenticated && !prevProps.authStore.isAuthenticated) {
-            await this.props.authStore.fetchProfile()
-        }
-    }
-
     logoutHandler = async () => {
         await this.props.authStore.logout()
     }
