@@ -1,4 +1,4 @@
-import { observable, computed, reaction, action, runInAction } from 'mobx'
+import { observable, computed, action, runInAction } from 'mobx'
 import ApiService from '../services/ApiService'
 import StorageService from '../services/StorageService'
 import history from '../services/history'

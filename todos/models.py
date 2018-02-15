@@ -46,6 +46,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(default='', max_length=60)
     current_position = models.CharField(default='', max_length=64)
     bio = models.CharField(default='', max_length=255)
+    department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
 
@@ -59,13 +61,29 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 # Define additional Models
+class Department(models.Model):
+    """
+    List of departments
+    """
+    name = models.CharField(max_length=140)
+
+    class Meta:
+        ordering = ['name']
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=140)
+
+    class Meta:
+        ordering = ['name']
+
 
 
 class Todo(models.Model):
     """
     Topic model for handling topics
     """
-    name = models.CharField(max_length=12)
+    name = models.CharField(max_length=140)
     descr = models.CharField(default='', max_length=255)
     completed = models.BooleanField(default=False)
     user = models.ForeignKey('User', on_delete=models.CASCADE, null=True)

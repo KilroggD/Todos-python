@@ -113,8 +113,8 @@ class ApiSerice {
         return res;
     }
 
-    async users(token) { //get users list
-        const res = await this.apiCall(api.users, 'GET', token);
+    async get_users(params, token) { //get users list
+        const res = await this.apiCall(api.users, 'POST', token, params);
         this.handleCommonError(res);
         return res.body;
     }

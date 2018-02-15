@@ -66,10 +66,17 @@ class UserList(APIView):
     List all users
     """
     def get(self, request, format=None):
-        #TODO - add search parameters
         users = User.objects.all()
         serializer = UserItemSerializer(users, many=True)
         return Response({'users': serializer.data})
+
+
+class UserSearch(APIView):
+    """
+    Advanced user search
+    """
+    def post(self, request)  
+        pass   
 
 class UserDetail(APIView):
     """
