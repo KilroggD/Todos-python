@@ -4,6 +4,25 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 
+
+# Define additional Models
+class Department(models.Model):
+    """
+    List of departments
+    """
+    name = models.CharField(max_length=140)
+
+    class Meta:
+        ordering = ['name']
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=140)
+
+    class Meta:
+        ordering = ['name']
+
+
 # Customize Users model
 
 
@@ -33,6 +52,19 @@ class MyUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
         return self.create_user(email, password, **extra_fields)
 
+    def search(self, **kwargs):
+        qs = self.get_query_set()
+        if kwargs.get('first_name', ''):
+            qs = qs.filter(first_name__icontains=kwargs['first_name'])
+        if kwargs.get('last_name', ''):
+            qs = qs.filter(last_name__icontains=kwargs['last_name'])
+        if kwargs.get('department', ''):
+            qs = qs.filter(department__name=kwargs['department'])
+        if kwargs.get('country', ''):
+            qs = qs.filter(country__name=kwargs['country'])            
+
+        
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
@@ -46,8 +78,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(default='', max_length=60)
     current_position = models.CharField(default='', max_length=64)
     bio = models.CharField(default='', max_length=255)
-    department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
-    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
+    department = models.ForeignKey(
+        'Department', on_delete=models.SET_NULL, null=True)
+    country = models.ForeignKey(
+        'Country', on_delete=models.SET_NULL, null=True)
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
 
@@ -59,25 +93,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.email
-
-# Define additional Models
-class Department(models.Model):
-    """
-    List of departments
-    """
-    name = models.CharField(max_length=140)
-
-    class Meta:
-        ordering = ['name']
-
-
-class Country(models.Model):
-    name = models.CharField(max_length=140)
-
-    class Meta:
-        ordering = ['name']
-
-
 
 class Todo(models.Model):
     """

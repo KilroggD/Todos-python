@@ -6,16 +6,26 @@ class UserStore {
     @observable isFailure = false
     @obervable users = []
 
-    @computed get total {
+    @computed get total() {
         return users.length
     }
 
     @action async getUsers(params) {
-        this.isLoading = true
-        this.isFailure = false
         try {
-            const users = await ApiService.users(params)
+            runInAction(() => {
+                const users = await ApiService.users(params)
+                this.isLoading = false
+                this.users = users
+            })
+        } catch (e) {
+            runInAction(() => {
+                this.isLoading = false
+                this.isFailure = true
+            })
         }
     }
 
 }
+
+export default new UserStore()
+export { UserStore }
