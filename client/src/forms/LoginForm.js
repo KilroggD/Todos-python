@@ -1,4 +1,5 @@
 import React from 'react'
+import Form from './Form'
 
 class LoginForm extends React.Component {
 
@@ -17,12 +18,11 @@ class LoginForm extends React.Component {
 
     render() {
         return <div className="login-container">
-            <h3>Use email for login and lowercase last name as password</h3>
-            <form onSubmit={this.handleSubmit} >
+            <Form onSubmit={this.handleSubmit} title="Sign In" button="Sign In">
                 <input type="email" required placeholder="Email" ref={input => this.email = input} />
                 <input type="password" required placeholder="Password" ref={input => this.password = input} />
                 <input type="submit" value="Login" />
-            </form>
+            </Form>
         </div>
     }
 

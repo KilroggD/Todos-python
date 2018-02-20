@@ -13,6 +13,7 @@ class UserListContainer extends React.Component {
 
     render() {
         const userStore = this.props.userStore
+        const searchStore = this.props.searchStore
         //add loading and failure state
         if (this.props.isLoading) {
             return <span>Loading...</span>
@@ -25,8 +26,8 @@ class UserListContainer extends React.Component {
         return <div className="user">
             <UserForm data={{}}
                 submitHandler={userStore.getUsers}
-             /*   changeHandler={this.props.changeForm}
-                clearHandler={this.props.clearForm} *//>
+                changeHandler={searchStore.changeForm}
+                clearHandler={searchStore.clearForm} />
             {userStore.users && <UserList users={userStore.users} />}
         </div>;
     }

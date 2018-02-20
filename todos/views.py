@@ -75,7 +75,7 @@ class UserSearch(APIView):
     """
     Advanced user search
     """
-    def post(self, request)  
+    def post(self, request):
         pass   
 
 class UserDetail(APIView):

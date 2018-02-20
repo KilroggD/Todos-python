@@ -10,6 +10,7 @@ import App from './App'
 import Home from './containers/Home'
 import LoginContainer from './containers/LoginContainer'
 import UserListContainer from './containers/UserListContainer'
+import routes from './routes'
 
 const stores = {
     authStore,
@@ -23,8 +24,9 @@ ReactDOM.render(
             <Router history={history}>
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    <Route path="/login" component={LoginContainer} />
-                    <Route path="/users" component={UserListContainer} />
+                    <Route path={routes.login} component={LoginContainer} />
+                    <Route path={routes.sign_up} >
+                    <Route path={routes.users} component={UserListContainer} />
                 </Switch>
             </Router>
         </App>
