@@ -21,7 +21,6 @@ class LoginForm extends React.Component {
             <Form onSubmit={this.handleSubmit} title="Sign In" button="Sign In">
                 <input type="email" required placeholder="Email" ref={input => this.email = input} />
                 <input type="password" required placeholder="Password" ref={input => this.password = input} />
-                <input type="submit" value="Login" />
             </Form>
         </div>
     }

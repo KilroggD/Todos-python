@@ -4,23 +4,24 @@ import ApiService from '../services/ApiService'
 class UserStore {
     @observable isLoading = true
     @observable isFailure = false
-    @obervable users = []
+    @observable users = []
 
     @computed get total() {
-        return users.length
+        return this.users.length
     }
 
     @action async getUsers(params) {
         try {
+            const data = await ApiService.search_users(params)          
             runInAction(() => {
-                const users = await ApiService.users(params)
                 this.isLoading = false
-                this.users = users
+                this.users = data.users
             })
         } catch (e) {
             runInAction(() => {
                 this.isLoading = false
                 this.isFailure = true
+                this.users = []
             })
         }
     }

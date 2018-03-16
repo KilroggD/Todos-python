@@ -11,8 +11,8 @@ const api = {
     user: API + '/user',
     current_user: API + '/current_user/',
     todos: API + '/todos/',
-    todo: API + '/todo',
-
+    todo: API + '/todo/',
+    search: API + '/search/',
 }
 
 export default api

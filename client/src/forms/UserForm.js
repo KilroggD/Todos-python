@@ -56,7 +56,7 @@ class UserForm extends React.Component {
                     </select>
                 </label>
                 <label>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Submit" onClick={this.handleSubmit} />
                     <input type="button" value="Clear" onClick={this.handleClear} />
                 </label>
             </form>

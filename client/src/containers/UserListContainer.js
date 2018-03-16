@@ -11,6 +11,10 @@ class UserListContainer extends React.Component {
         await this.props.userStore.getUsers()
     }
 
+    getUsers = async(params) => {
+        await this.props.userStore.getUsers()
+    }
+
     render() {
         const userStore = this.props.userStore
         const searchStore = this.props.searchStore
@@ -25,7 +29,7 @@ class UserListContainer extends React.Component {
 
         return <div className="user">
             <UserForm data={{}}
-                submitHandler={userStore.getUsers}
+                submitHandler={this.getUsers}
                 changeHandler={searchStore.changeForm}
                 clearHandler={searchStore.clearForm} />
             {userStore.users && <UserList users={userStore.users} />}

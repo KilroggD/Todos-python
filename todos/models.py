@@ -101,7 +101,7 @@ class Todo(models.Model):
     name = models.CharField(max_length=140)
     descr = models.CharField(default='', max_length=255)
     completed = models.BooleanField(default=False)
-    user = models.ForeignKey('User', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('User', related_name='todos', on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ['name']

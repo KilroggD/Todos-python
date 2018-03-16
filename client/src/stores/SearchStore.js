@@ -3,11 +3,11 @@ import StorageService from '../services/StorageService'
 
 class SearchStore {
 
-    @observable data = {}
+    @observable searchData = {}
 
     @action loadForm(data) {
-        this.data = {
-            ...this.data,
+        this.searchData = {
+            ...this.searchData,
             data
         }
     }
@@ -21,7 +21,7 @@ class SearchStore {
 
     @action clearForm() {
         StorageService.removeSearchData()
-        this.data = {}
+        this.searchData = {}
     }
 
 }
