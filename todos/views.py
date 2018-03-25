@@ -88,7 +88,7 @@ class UserSearch(APIView):
             users = User.objects.search(request.data)
         else:
             users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+        serializer = UserProfileSerializer(users, many=True)
         return Response({'users': serializer.data})
 
 
