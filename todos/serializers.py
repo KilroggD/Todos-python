@@ -41,14 +41,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
     department = serializers.CharField(
         read_only=True, source='department.name')
     country = serializers.CharField(read_only=True, source='country.name')
+    todos_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = ('id', 'email_hash', 'first_name', 'last_name',
-                  'current_position', 'bio', 'country', 'department')
+                  'current_position', 'bio', 'country', 'department', 'todos_count')
 
     def get_email_hash(self, obj):
         return hashlib.md5(obj.email.encode("UTF-8")).hexdigest()
+
+    def get_todos_count(self, obj):
+        return obj.todos.count()
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -4,7 +4,7 @@ import { Redirect } from 'react-router'
 import routes from './routes'
 import Header from './components/Header'
 import logo from './logo.svg'
-import './App.css'
+import './styles/style.css'
 
 @inject('authStore') @observer
 class App extends Component {
