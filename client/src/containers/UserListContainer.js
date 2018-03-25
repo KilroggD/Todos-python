@@ -28,10 +28,10 @@ class UserListContainer extends React.Component {
         }
 
         return <div className="user">
-            <UserForm data={{}}
+            <UserForm data={searchStore.searchData}
                 submitHandler={this.getUsers}
-                changeHandler={searchStore.changeForm}
-                clearHandler={searchStore.clearForm} />
+                changeHandler={searchStore.loadForm.bind(searchStore)}
+                clearHandler={searchStore.clearForm.bind(searchStore)} />
             {userStore.users && <UserList users={userStore.users} />}
         </div>;
     }
