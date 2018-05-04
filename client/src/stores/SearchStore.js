@@ -6,7 +6,6 @@ class SearchStore {
     @observable searchData = {}
 
     @action loadForm(data) {
-        console.log(this)
         this.searchData = {
             ...this.searchData,
             ...data
