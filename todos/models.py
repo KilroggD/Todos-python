@@ -52,8 +52,9 @@ class MyUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
         return self.create_user(email, password, **extra_fields)
 
-    def search(self, **kwargs):
-        qs = self.get_query_set()
+    def search(self, kwargs):
+        qs = self.get_queryset()
+        print(kwargs)
         if kwargs.get('first_name', ''):
             qs = qs.filter(first_name__icontains=kwargs['first_name'])
         if kwargs.get('last_name', ''):
@@ -62,7 +63,7 @@ class MyUserManager(BaseUserManager):
             qs = qs.filter(department__name=kwargs['department'])
         if kwargs.get('country', ''):
             qs = qs.filter(country__name=kwargs['country'])            
-
+        return qs
         
 
 

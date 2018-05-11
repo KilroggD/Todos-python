@@ -41,7 +41,7 @@ class UserForm extends React.Component {
                 Department:
                     <select name="department" value={this.props.data.department || ''} onChange={this.handleChange}>
                         <option value=''>Select department</option>
-                        <option value="Development">Development</option>
+                        <option value="Technology">Technology</option>
                         <option value="Support">Support</option>
                         <option value="Legal">Legal</option>
                     </select>

@@ -1,5 +1,6 @@
 import { observable, computed, action, runInAction } from 'mobx'
 import ApiService from '../services/ApiService'
+import StorageService from '../services/StorageService'
 
 class UserStore {
     @observable isLoading = true
@@ -16,6 +17,10 @@ class UserStore {
             runInAction(() => {
                 this.isLoading = false
                 this.users = data.users
+                if (Object.keys(params).length && data.users.length) {
+                    //save successful request
+                    StorageService.setSearchData(params)
+                }
             })
         } catch (e) {
             runInAction(() => {

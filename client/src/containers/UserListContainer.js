@@ -8,11 +8,16 @@ class UserListContainer extends React.Component {
 
     async componentDidMount() {
         this.props.searchStore.loadStoredData()
-        await this.props.userStore.getUsers()
+        await this.props.userStore.getUsers({})
     }
 
     getUsers = async(params) => {
-        await this.props.userStore.getUsers()
+        Object.keys(params).forEach(key => {
+            if(!params[key].length) {
+                delete params[key]
+            }
+        });
+        await this.props.userStore.getUsers(params)
     }
 
     render() {
